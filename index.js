@@ -34,6 +34,24 @@ app.post('/item/doAdd', async function(req, res) {
     else res.send("Succeeded! " + ret);    
 })
 
+app.post('/item/doDelete', async function(req, res) {
+    console.log("In the delete route:");  
+    console.log(req.body);          
+    let ret = await Db.delete(req.body.id);
+    console.log('ret is: ' + ret); 
+    if(ret == -1) res.send('Delete Fail!');    
+    else res.send("Delete Succeeded! " + ret);    
+})
+
+app.post('/item/doEdit', async function(req, res) {
+    console.log("In the edit route:");  
+    console.log(req.body);          
+    let ret = await Db.update(req.body);
+    console.log('ret is: ' + ret); 
+    if(ret == -1) res.send('Edit Fail!');    
+    else res.send("Edit Succeeded! " + ret);    
+})
+
 var portnum = 3080;
 app.listen(portnum, process.env.IP, function(){
     console.log("Server has started on " + portnum);

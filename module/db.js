@@ -37,10 +37,51 @@ class Db {
         return new Promise((resolve, reject) => {        
             this.Conn().query(sql, [values], function(err, result) {
                 if(err){
-                    reject(-1);
+                    reject(err);
                 } else {
                     //console.log(result);
                     resolve(targetObj.id);
+                }
+            })       
+        }).catch((error) => {
+            return -1;
+        });           
+    }
+
+    update(targetObj) {
+        var sql = "UPDATE item SET " + 
+        " name = '" + targetObj.name + "'," +
+        " diff = '" + targetObj.diff + "'," +
+        " type1 = '" + targetObj.type1 + "'," + 
+        " type2 = '" + targetObj.type2 + "'," +
+        " type3 = '" + targetObj.type3 + "'," +
+        " grasp = '" + targetObj.grasp + "'," +
+        " lastaccessed = '" + targetObj.last + "'" + 
+        " WHERE id = " + targetObj.id;
+        console.log(sql);
+        return new Promise((resolve, reject) => {        
+            this.Conn().query(sql, function(err, result) {
+                if(err){
+                    reject(err);
+                } else {
+                    //console.log(result);
+                    resolve("Update:" + targetObj.id);
+                }
+            })       
+        }).catch((error) => {
+            return -1;
+        });          
+    }
+
+    delete(id) {
+        var sql = "DELETE FROM item WHERE id = " + mysql.escape(id);        
+        return new Promise((resolve, reject) => {        
+            this.Conn().query(sql, function(err, result) {
+                if(err){
+                    reject(err);
+                } else {
+                    //console.log(result);
+                    resolve("Delete " + id);
                 }
             })       
         }).catch((error) => {
@@ -66,6 +107,8 @@ class Db {
             })
         })        
     }
+
+
 
 }
 
