@@ -89,14 +89,14 @@ class Db {
         });           
     }
 
-    query(id) {        
+    query(id, dbName) {        
         let tail = '';
         if(id == 0) {
             tail = '';
         } else {
             tail = ' WHERE id = ' + mysql.escape(id);
         }
-        var sql = 'SELECT * FROM item' + tail;
+        var sql = 'SELECT * FROM ' + dbName + " " + tail;
         return new Promise((resolve, reject) => {
             this.Conn().query(sql, function(err, result) {
                 if(err) return reject(err);

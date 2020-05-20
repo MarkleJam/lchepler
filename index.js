@@ -15,13 +15,20 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors(corsOptions));
 
 app.get('/item', async function(req, res){    
-    let ret = await Db.query(0);
+    let ret = await Db.query(0,'item');
+    res.send(ret);
+})
+
+app.get('/history/:id', async function(req, res){            
+    let targetId = req.params.id;
+    console.log("In the get history route: " + targetId);
+    let ret = await Db.query(targetId, 'History');
     res.send(ret);
 })
 
 app.get('/item/:id', async function(req, res){
     let targetId = req.params.id;    
-    let ret = await Db.query(targetId);    
+    let ret = await Db.query(targetId,'item');    
     res.send(ret);
 })
 
