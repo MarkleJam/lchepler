@@ -20,5 +20,9 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.items = require("./item.model.js")(sequelize, Sequelize);
+db.historys = require("./history.model.js")(sequelize, Sequelize);
+
+//db.items.hasMany(db.historys);
+//db.historys.belongsTo(db.items);
 
 module.exports = db;
