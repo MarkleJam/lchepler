@@ -8,6 +8,9 @@ module.exports = app => {
   
     // Retrieve all Item
     router.get("/", items.findAll);
+
+    // Retrieve all Item
+    router.get("/search", items.search);
   
     // Retrieve a single Item with id
     router.get("/:id", items.findOne);

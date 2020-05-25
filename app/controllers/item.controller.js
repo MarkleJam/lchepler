@@ -1,4 +1,5 @@
 const db = require("../models");
+var JSON = require('JSON');
 const Item = db.items;
 const Op = db.Sequelize.Op;
 
@@ -42,6 +43,44 @@ exports.findAll = (req, res) => {
   //var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   var condition  = null;
   Item.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving items."
+      });
+    });
+};
+
+// Search Items from the database on conditions.
+exports.search = (req, res) => {
+  console.log("You come here:" + JSON.stringify(req.query));
+  let id = req.query.id;
+  let name = req.query.name;
+  let diff = req.query.diff;
+  let type1 = req.query.type1;
+  let type2 = req.query.type2;
+  let type3 = req.query.type3;
+  let grasp = req.query.grasp;
+
+  let nameCondition = (!name) ? {} : { name: { [Op.like]: `%${name}%` } };
+  let idCondition =  id ? { id: { [Op.like]: `%${id}%` } } : {};
+  let diffCondition = diff ? { diff: { [Op.like]: `%${diff}%` } } : {};
+  let graspCondition = grasp ? { grasp: { [Op.like]: `%${grasp}%` } } : {};
+  let reqType1 = type1, reqType2 = type2, reqType3 = type3;
+
+  let type1Condition = reqType1 ? {[Op.or]:[{type1: {[Op.like]: `%${reqType1}%` }},{type2: {[Op.like]: `%${reqType1}%` }}, {type3: {[Op.like]: `%${reqType1}%` }}]} : {};
+  let type2Condition = reqType2 ? {[Op.or]:[{type1: {[Op.like]: `%${reqType2}%` }},{type2: {[Op.like]: `%${reqType2}%` }}, {type3: {[Op.like]: `%${reqType2}%` }}]} : {};
+  let type3Condition = reqType3 ? {[Op.or]:[{type1: {[Op.like]: `%${reqType3}%` }},{type2: {[Op.like]: `%${reqType3}%` }}, {type3: {[Op.like]: `%${reqType3}%` }}]} : {};
+
+  Item.findAll({ where: [nameCondition,
+    idCondition,
+    diffCondition,
+    graspCondition, type1Condition, type2Condition, type3Condition]
+    }
+  )
     .then(data => {
       res.send(data);
     })
