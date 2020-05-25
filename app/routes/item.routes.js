@@ -11,6 +11,9 @@ module.exports = app => {
 
     // Retrieve all Item
     router.get("/search", items.search);
+
+    //Get reviews
+    router.get("/review", items.getReviews);
   
     // Retrieve a single Item with id
     router.get("/:id", items.findOne);
