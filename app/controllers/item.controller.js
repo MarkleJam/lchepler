@@ -2,7 +2,9 @@ const db = require("../models");
 var JSON = require('JSON');
 const Item = db.items;
 const Op = db.Sequelize.Op;
-
+const { QueryTypes } = require('sequelize');
+const sequelize = db.sequelize;
+const sqls = require('../sqls/sql.js');
 // Create and Save a new Item
 exports.create = (req, res) => {
   // Validate request
@@ -91,6 +93,21 @@ exports.search = (req, res) => {
       });
     });
 };
+
+exports.getReviews = async (req, res) => {
+  const interval = req.query.interval;
+  let searchsql = sqls.searchReview;
+  searchsql = searchsql.replace("{{interval}}", interval);
+  sequelize.query(searchsql, { type: QueryTypes.SELECT, raw: true })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message: "Error retrieving review:" + err
+    });
+  })
+}
 
 // Find a single Item with an id
 exports.findOne = (req, res) => {
