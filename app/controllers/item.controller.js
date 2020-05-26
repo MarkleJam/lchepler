@@ -24,6 +24,7 @@ exports.create = (req, res) => {
     type2: req.body.type2,
     type3: req.body.type3,
     grasp: req.body.grasp,
+    createAt: req.body.createAt,
   };
 
   // Save Item in the database
@@ -58,7 +59,6 @@ exports.findAll = (req, res) => {
 
 // Search Items from the database on conditions.
 exports.search = (req, res) => {
-  console.log("You come here:" + JSON.stringify(req.query));
   let id = req.query.id;
   let name = req.query.name;
   let diff = req.query.diff;
