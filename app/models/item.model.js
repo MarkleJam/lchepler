@@ -23,7 +23,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         grasp: {
             type: Sequelize.STRING
-        }
+        },
+        createAt: {
+            type: Sequelize.DATEONLY
+        },
     },{
         freezeTableName: true, // Model tableName will be the same as the model name
         timestamps: false,
